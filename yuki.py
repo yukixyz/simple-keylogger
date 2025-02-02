@@ -87,4 +87,4 @@ try:
 except KeyboardInterrupt:
     print("\nKeylogger stopped.")
 
-input("Presiona Enter para salir...")
+input("Press ENTER to exit...")
